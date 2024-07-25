@@ -33,7 +33,7 @@ agg_orders = spark.sql("SELECT order_status, COUNT(*) AS total FROM orders GROUP
 query = agg_orders \
     .writeStream \
     .format("console") \
-    .outputMode("complete") \
+    .outputMode("update") \
     .option("checkpointLocation", "checkpointdir1") \
     .start() 
 				
