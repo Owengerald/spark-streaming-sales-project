@@ -16,17 +16,19 @@ lines = spark \
     .readStream \
     .format("socket") \
     .option("host", "localhost") \
-    .option("port", 9990) \
+    .option("port", 9999) \
     .load()
 
 
 # 2. processing logic
+words = lines.select(explode(split(lines.value, " ")).alias("word"))
+wordCounts = words.groupBy("word").count()
 
 
 # 3. write to the sink
-query = lines \
+query = wordCounts \
     .writeStream \
-    .outputMode("append") \
+    .outputMode("complete") \
     .format("console") \
     .option("checkpointLocation", "checkpointdir1") \
     .start()
