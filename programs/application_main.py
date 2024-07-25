@@ -7,6 +7,7 @@ if __name__ == '__main__':
 
     spark = SparkSession.builder \
             .appName("streaming application") \
+            .config("spark.sql.shuffle.partitions",3) \
             .master("local[2]") \
             .getOrCreate()
 
@@ -16,7 +17,7 @@ lines = spark \
     .readStream \
     .format("socket") \
     .option("host", "localhost") \
-    .option("port", 9999) \
+    .option("port", 9989) \
     .load()
 
 
